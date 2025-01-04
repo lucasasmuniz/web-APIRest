@@ -1,15 +1,11 @@
 package proj.web_api.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
 import proj.web_api.model.User;
 
 @Repository
-public class UserRepository {
-    
-    public void save(User user){}
-    public void deleteById(Integer id){}
-    public List<User> findAll(){}
-    public User findById(Integer id){}
-    public User findByUsername(String username){}
+public interface UserRepository extends JpaRepository<User,Integer>{
+    public User findByLogin(String login);
 }

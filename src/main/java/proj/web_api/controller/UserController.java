@@ -28,12 +28,12 @@ public class UserController {
 
     @GetMapping("/{username}")
     public User getOneUser(@PathVariable("username") String username){
-        return userRepository.findByUsername(username);
+        return userRepository.findByLogin(username);
     }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable("id") Integer id){
-        userRepository.deleteById();
+        userRepository.deleteById(id);
     }
 
     @PostMapping()
