@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import proj.web_api.handler.NoUserFoundException;
+import proj.web_api.handler.ObligatoryFieldException;
 import proj.web_api.model.User;
 import proj.web_api.repository.UserRepository;
 
@@ -33,11 +35,24 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable("id") Integer id){
+        if (userRepository.findById(id).isEmpty()){
+            throw new NoUserFoundException("Usuário com a id " + id + " não foi encontrado");
+        }
         userRepository.deleteById(id);
     }
 
     @PostMapping()
     public void postUser(@RequestBody User user){
+        if(user.getLogin() == null){
+            throw new ObligatoryFieldException("login");
+
+        } else if (user.getName() == null){
+            throw new ObligatoryFieldException("nome");
+            
+        } else if(user.getPassword() == null){
+            throw new ObligatoryFieldException("senha");
+
+        }
         userRepository.save(user);
     }
 }
