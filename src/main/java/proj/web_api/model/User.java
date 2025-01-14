@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,6 +24,8 @@ public class User {
     private Integer id;
     @Column(length=50,nullable=false)
     private String name;
+    @ManyToOne
+    private Endereco endereco;
     @Column(length=50,nullable=false)
     private String login;
     @Column(length=100,nullable=false)
@@ -78,6 +81,14 @@ public class User {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
 }
