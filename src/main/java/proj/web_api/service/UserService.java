@@ -27,7 +27,9 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public void createUser(User user){
-        salvarClienteComCep(user);
+        Endereco endereco = fazerChecagens(user);
+        user.setEndereco(endereco);
+        userRepository.save(user);
     }
     
     public void deleteUser(Integer id){
@@ -46,13 +48,22 @@ public class UserService {
     }
     
     public void refreshUserData(Integer id, User user) {
-        userRepository.findById(id).orElseThrow(() -> 
+        Endereco endereco = fazerChecagens(user);
+        User existingUser = userRepository.findById(id).orElseThrow(() -> 
             new RuntimeException(String.format("O Usuário com id: %d não existe.", id))
-            );
-            salvarClienteComCep(user);    
-        }
+        );
+    
+        // Atualizar o usuário com as novas informações
+        existingUser.setLogin(user.getLogin());
+        existingUser.setName(user.getName());
+        existingUser.setPassword(user.getPassword());
+        existingUser.setEndereco(endereco);
+    
+        // Salvar as mudanças no banco
+        userRepository.save(existingUser); // Atualiza o usuário existente
+    }
         
-    private void salvarClienteComCep(User user) {
+    private Endereco fazerChecagens(User user) {
         if (user.getLogin() == null) {
             throw new ObligatoryFieldException("login");
         } else if (user.getName() == null) {
@@ -74,8 +85,6 @@ public class UserService {
 
             return enderecoRepository.save(novoEndereco);
         });
-
-        user.setEndereco(endereco);
-        userRepository.save(user);
+        return endereco;
     }
 }
