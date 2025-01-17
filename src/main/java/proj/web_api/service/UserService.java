@@ -1,7 +1,7 @@
 package proj.web_api.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,6 @@ public class UserService {
     // private PasswordEncoder encoder;
     @Autowired
     private ViaCepService viaCepService;
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public void createUser(User user){
         Endereco endereco = fazerChecagens(user);
@@ -39,7 +38,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
     
-    public Iterable<User> findAllUsers(){
+    public List<User> findAllUsers(){
         return userRepository.findAll();
     }
     
@@ -75,7 +74,6 @@ public class UserService {
         String cep = user.getEndereco().getCep();
 
         Endereco endereco = enderecoRepository.findById(cep).orElseGet(() -> {
-            logger.info("Endereço não encontrado no banco. Consultando API ViaCEP.");
             Endereco novoEndereco = viaCepService.consultarCep(cep);
             novoEndereco.setCep(novoEndereco.getCep().replace("-", ""));
 

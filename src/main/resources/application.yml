@@ -1,0 +1,29 @@
+
+spring:
+  application:
+    name: web-api
+  jpa:
+    show-sql: true #Opcional
+    hibernate: 
+      ddl-auto: update #Opcional
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource: 
+    url: jdbc:postgresql://localhost:5432/db_test
+    username: postgres
+    password: club5
+    driver-class-name: org.postgresql.Driver
+#Por padrão o Spring security disponibiliza uma senha a cada execução pro usuário user
+#mas vou criar uma senha padrão aqui
+  # security:
+  #   user:
+  #     name: lucas
+  #     password: luc123
+  #     roles: USERS
+
+# Para pegar log
+# logging:
+#   file: 
+#     name: logs/application.log
+#   level:
+#     root: info
+#     proj.web_api.service: debug

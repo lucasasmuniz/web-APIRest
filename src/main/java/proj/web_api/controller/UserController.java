@@ -1,5 +1,7 @@
 package proj.web_api.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import proj.web_api.model.User;
-import proj.web_api.repository.UserRepository;
 import proj.web_api.service.UserService;
 
 @RestController
@@ -20,18 +21,16 @@ import proj.web_api.service.UserService;
 public class UserController {
     @Autowired
     private UserService service;
-    @Autowired
-    private UserRepository userRepository;
     
     @GetMapping()
-    public ResponseEntity<Iterable<User>> getUsers(){
+    public ResponseEntity<List<User>> getUsers(){
 
-        return ResponseEntity.ok(userRepository.findAll());
+        return ResponseEntity.ok(service.findAllUsers());
     }
 
     @GetMapping("/{username}")
     public ResponseEntity<User> getOneUser(@PathVariable("username") String username){
-        return ResponseEntity.ok(userRepository.findByLogin(username));
+        return ResponseEntity.ok(service.findUserByLogin(username));
     }
 
     @DeleteMapping("/{id}")
